@@ -21,9 +21,18 @@ class RegisterForm(UserCreationForm):
 
 class BookingForm(forms.ModelForm):
     date = forms.DateField(
-        input_formats=['%d.%m.%Y'],
-        widget=forms.DateInput(attrs={'placeholder': 'ДД.ММ.ГГГГ'})
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
     )
+
+    class Meta:
+        model = Booking
+        fields = ['hall', 'date', 'payment']
+
+    def clean_date(self):
+        booking_date = self.cleaned_data.get('date')
+        if booking_date < date.today():
+            raise forms.ValidationError('Нельзя выбрать дату в прошлом')
+        return booking_date
 
     class Meta:
         model = Booking
