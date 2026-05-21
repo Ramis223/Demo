@@ -1,0 +1,65 @@
+{% load django_bootstrap5 %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
+    <title>Конференции.РФ</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <style>
+        @media (max-width: 390px) {
+            .container { padding-left: 10px; padding-right: 10px; }
+            h1 { font-size: 1.8rem; }
+        }
+        .carousel-item img { height: 300px; object-fit: cover; }
+        @media (min-width: 768px) {
+            .carousel-item img { height: 400px; }
+        }
+        /* Микроанимации */
+.btn {
+    transition: all 0.2s ease;
+}
+.btn:hover {
+    transform: scale(1.02);
+}
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+.carousel-item img {
+    transition: transform 0.5s ease;
+}
+.navbar-brand {
+    transition: opacity 0.2s;
+}
+.navbar-brand:hover {
+    opacity: 0.8;
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">🏛️ Конференции.РФ</a>
+            <div class="ms-auto">
+                {% if user.is_authenticated %}
+                    <span class="text-white me-2">{{ user.username }}</span>
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Выйти</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        {% bootstrap_messages %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

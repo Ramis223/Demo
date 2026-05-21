@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<h2>👑 Панель администратора</h2>
+<p class="text-muted">Управление заявками на бронирование</p>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <select name="status" class="form-select">
+                    <option value="">Все статусы</option>
+                    <option value="new" {% if filter_status == 'new' %}selected{% endif %}>Новая</option>
+                    <option value="scheduled" {% if filter_status == 'scheduled' %}selected{% endif %}>Мероприятие назначено</option>
+                    <option value="completed" {% if filter_status == 'completed' %}selected{% endif %}>Мероприятие завершено</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-secondary w-100">🔍 Фильтр</button>
+            </div>
+            <div class="col-md-2">
+                <a href="{% url 'admin_panel' %}" class="btn btn-outline-secondary w-100">🗑️ Сбросить</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% for booking in bookings %}
+<div class="card mt-3">
+    <div class="card-body">
+        <h5>{{ booking.user.get_full_name|default:booking.user.username }} (@{{ booking.user.username }})</h5>
+        <p>🏠 Помещение: <strong>{{ booking.hall.name }}</strong></p>
+        <p>📅 Дата: {{ booking.date|date:"d.m.Y" }}</p>
+        <p>💳 Оплата: {{ booking.get_payment_display }}</p>
+        <p>Статус: 
+            <span class="badge 
+                {% if booking.status == 'new' %}bg-warning
+                {% elif booking.status == 'scheduled' %}bg-success
+                {% else %}bg-secondary{% endif %}">
+                {{ booking.get_status_display }}
+            </span>
+        </p>
+        {% if booking.review %}
+            <hr>
+            <strong>Отзыв:</strong>
+            <p class="text-muted">{{ booking.review }}</p>
+        {% endif %}
+        
+        <form method="post" action="{% url 'admin_status' booking.pk %}" class="mt-3">
+            {% csrf_token %}
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <select name="status" class="form-select">
+                        <option value="new">Новая</option>
+                        <option value="scheduled">Мероприятие назначено</option>
+                        <option value="completed">Мероприятие завершено</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-warning w-100">Изменить статус</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% empty %}
+<div class="alert alert-info">Нет заявок</div>
+{% endfor %}
+
+{% if page_obj.has_other_pages %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1{% if filter_status %}&status={{ filter_status }}{% endif %}">« Первая</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if filter_status %}&status={{ filter_status }}{% endif %}">Назад</a></li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if filter_status %}&status={{ filter_status }}{% endif %}">Вперед</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if filter_status %}&status={{ filter_status }}{% endif %}">Последняя »</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

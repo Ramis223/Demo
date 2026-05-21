@@ -1,0 +1,51 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Мини-слайдер в личном кабинете -->
+<div id="cabinetSlider" class="carousel slide mb-4" data-bs-ride="carousel" data-bs-interval="3000">
+    <div class="carousel-inner rounded-3">
+        <div class="carousel-item active">
+            <img src="{% static 'booking/images/slider1.png' %}" class="d-block w-100" style="height: 150px; object-fit: cover;">
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'booking/images/slider1.png' %}" class="d-block w-100" style="height: 150px; object-fit: cover;">
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'booking/images/slider1.png' %}" class="d-block w-100" style="height: 150px; object-fit: cover;">
+        </div>
+    </div>
+</div>
+
+<h2>Мои заявки</h2>
+{% if bookings %}
+    {% for booking in bookings %}
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5>{{ booking.hall.name }}</h5>
+            <p>📅 Дата: {{ booking.date|date:"d.m.Y" }}</p>
+            <p>💳 Оплата: {{ booking.get_payment_display }}</p>
+            <p>Статус: 
+                <span class="badge 
+                    {% if booking.status == 'new' %}bg-warning
+                    {% elif booking.status == 'scheduled' %}bg-success
+                    {% else %}bg-secondary{% endif %}">
+                    {{ booking.get_status_display }}
+                </span>
+            </p>
+            {% if booking.review %}
+                <hr>
+                <strong>Отзыв:</strong>
+                <p>{{ booking.review }}</p>
+            {% elif booking.can_leave_review %}
+                <a href="{% url 'add_review' booking.pk %}" class="btn btn-outline-primary">Оставить отзыв</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-info">У вас пока нет заявок</div>
+    <a href="{% url 'booking' %}" class="btn btn-primary">Создать заявку</a>
+{% endif %}
+{% endblock %}
