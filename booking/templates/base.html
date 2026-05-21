@@ -15,7 +15,10 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">🏛️ Конференции.РФ</a>
+            <a class="navbar-brand" href="/">
+                <img src="{% static 'booking/images/Logo.png' %}" alt="Логотип" height="35" style="display: inline-block; margin-right: 10px;">
+                Конференции.РФ
+            </a>
             <div class="ms-auto">
                 {% if user.is_authenticated %}
                     <span class="text-white me-2">{{ user.username }}</span>
@@ -32,6 +35,7 @@
         {% block content %}{% endblock %}
     </div>
 </body>
+
 <style>
     * {
         font-family: 'Roboto', sans-serif;
