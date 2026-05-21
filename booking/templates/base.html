@@ -8,39 +8,9 @@
     <title>Конференции.РФ</title>
     {% bootstrap_css %}
     {% bootstrap_javascript %}
-    <style>
-        @media (max-width: 390px) {
-            .container { padding-left: 10px; padding-right: 10px; }
-            h1 { font-size: 1.8rem; }
-        }
-        .carousel-item img { height: 300px; object-fit: cover; }
-        @media (min-width: 768px) {
-            .carousel-item img { height: 400px; }
-        }
-        /* Микроанимации */
-.btn {
-    transition: all 0.2s ease;
-}
-.btn:hover {
-    transform: scale(1.02);
-}
-.card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-.carousel-item img {
-    transition: transform 0.5s ease;
-}
-.navbar-brand {
-    transition: opacity 0.2s;
-}
-.navbar-brand:hover {
-    opacity: 0.8;
-}
-    </style>
+    <!-- Шрифт roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -62,4 +32,124 @@
         {% block content %}{% endblock %}
     </div>
 </body>
+<style>
+    * {
+        font-family: 'Roboto', sans-serif;
+    }
+    
+    /* Цветовая схема */
+    :root {
+        --gray-dark: #343A40;
+        --gray-light: #CED4DA;
+        --green: #28A745;
+        --white: #FFFFFF;
+    }
+    
+    body {
+        background-color: var(--white);
+        color: var(--gray-dark);
+    }
+    
+    /* Заголовки */
+    h1 {
+        font-size: 36px;
+        font-weight: 700;
+        color: var(--gray-dark);
+    }
+    
+    h2 {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--gray-dark);
+    }
+    
+    h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--gray-dark);
+    }
+    
+    /* Основной текст */
+    p, li, .main-text {
+        font-size: 16px;
+        font-weight: 400;
+    }
+    
+    /* Мелкий текст */
+    small, .small-text {
+        font-size: 12px;
+        font-weight: 300;
+    }
+    
+    /* Навбар */
+    .navbar-dark.bg-dark {
+        background-color: var(--gray-dark) !important;
+    }
+    
+    /* Кнопки */
+    .btn-primary {
+        background-color: var(--green);
+        border-color: var(--green);
+    }
+    
+    .btn-primary:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+    
+    /* Карточки */
+    .card {
+        border-color: var(--gray-light);
+    }
+    
+    .card-header {
+        background-color: var(--gray-dark);
+        color: var(--white);
+    }
+    
+
+    /* Микроанимации */
+    .btn, .card, .nav-link {
+        transition: all 0.2s ease;
+    }
+    
+    .btn:hover {
+        transform: scale(1.02);
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    
+    /* Секция контакты */
+    .contacts-section {
+        background-color: var(--gray-light);
+        border-radius: 15px;
+        padding: 20px;
+        margin-top: 40px;
+    }
+    
+    .payment-icons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+    
+    .payment-badge {
+        background-color: var(--gray-dark);
+        color: var(--white);
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+    
+    @media (max-width: 390px) {
+        .container { padding-left: 10px; padding-right: 10px; }
+        h1 { font-size: 28px; }
+        h2 { font-size: 20px; }
+        .contacts-section { padding: 15px; }
+    }
+</style>
 </html>

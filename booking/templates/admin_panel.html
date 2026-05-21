@@ -64,6 +64,34 @@
         </form>
     </div>
 </div>
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    <option value="">Все статусы</option>
+                    <option value="new" {% if filter_status == 'new' %}selected{% endif %}>Новая</option>
+                    <option value="scheduled" {% if filter_status == 'scheduled' %}selected{% endif %}>Мероприятие назначено</option>
+                    <option value="completed" {% if filter_status == 'completed' %}selected{% endif %}>Мероприятие завершено</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="sort" class="form-select">
+                    <option value="-created_at" {% if sort == '-created_at' %}selected{% endif %}>По дате (новые)</option>
+                    <option value="created_at" {% if sort == 'created_at' %}selected{% endif %}>По дате (старые)</option>
+                    <option value="date" {% if sort == 'date' %}selected{% endif %}>По дате конференции</option>
+                    <option value="user__username" {% if sort == 'user__username' %}selected{% endif %}>По пользователю</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-secondary w-100">🔍 Фильтр</button>
+            </div>
+            <div class="col-md-2">
+                <a href="{% url 'admin_panel' %}" class="btn btn-outline-secondary w-100">🗑️ Сбросить</a>
+            </div>
+        </form>
+    </div>
+</div>
 {% empty %}
 <div class="alert alert-info">Нет заявок</div>
 {% endfor %}

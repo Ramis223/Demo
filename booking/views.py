@@ -90,3 +90,23 @@ class AdminUpdateStatusView(AdminRequiredMixin, UpdateView):
     def form_valid(self, form):
         messages.success(self.request, 'Статус заявки обновлен')
         return super().form_valid(form)
+    
+def get_queryset(self):
+    qs = Booking.objects.all().order_by('-created_at')
+    status = self.request.GET.get('status')
+    sort = self.request.GET.get('sort')
+    
+    if status:
+        qs = qs.filter(status=status)
+    if sort:
+        qs = qs.order_by(sort)
+    else:
+        qs = qs.order_by('-created_at')
+    
+    return qs
+
+def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context['filter_status'] = self.request.GET.get('status', '')
+    context['sort'] = self.request.GET.get('sort', '-created_at')
+    return context
